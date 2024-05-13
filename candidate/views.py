@@ -2,6 +2,10 @@ from django.contrib.auth import authenticate, login
 from django.shortcuts import render, redirect
 from .forms import CandidateRegistrationForm,CandidateLoginForm
 from .models import CandidateAuth
+from company.models import JobOpening
+from .serializers import JobOpeningSerializer
+from rest_framework import generics, filters
+from .serializers import JobOpeningSerializer
 
 def register_candidate(request):
     if request.method == 'POST':
@@ -25,7 +29,6 @@ def candidate_login(request):
             username = form.cleaned_data['username']
             password = form.cleaned_data['password']
             
-            # Authenticate the user
             user = authenticate(request, username=username, password=password)
             
             if user is not None:
@@ -34,6 +37,12 @@ def candidate_login(request):
     else:
         form = CandidateLoginForm()
     return render(request, 'candidate_login.html', {'form': form})
+
+class JobOpeningList(generics.ListAPIView):
+    queryset = JobOpening.objects.all()
+    serializer_class = JobOpeningSerializer
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['job_title', 'company__company_name']
 
 def job_listing_page(request):
     return render(request,'job_listing_page.html')

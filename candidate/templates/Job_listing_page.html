@@ -2,11 +2,58 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Job Openings</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 </head>
 <body>
-    {% csrf_token %}
-    <h1>Login succesful</h1>
+    <div class="container mt-5">
+        <h1>Job Openings</h1>
+        <div class="form-group">
+            <input type="text" id="searchInput" class="form-control" placeholder="Search by Job Title or Company">
+        </div>
+        <button id="searchBtn" class="btn btn-primary mb-3">Search</button>
+        <div id="jobList"></div>
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            $('#searchBtn').click(function() {
+                var searchTerm = $('#searchInput').val();
+                // AJAX request to fetch job openings
+                $.ajax({
+                    url: '/api/job-openings/',
+                    type: 'GET',
+                    data: { search: searchTerm },
+                    success: function(data) {
+                        console.log('Received response:', data);
+                        displayJobOpenings(data);
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Error occurred:', xhr.responseText);
+                        $('#jobList').html('<p>Error occurred while fetching data.</p>');
+                    }
+                });
+            });
+        });
+    
+        function displayJobOpenings(data) {
+            var jobListHTML = '<ul class="list-group">';
+            $.each(data, function(index, job) {
+                jobListHTML += '<li class="list-group-item">';
+                jobListHTML += '<h5>' + job.job_title + '</h5>';
+                jobListHTML += '<p>Company: ' + job.company_name + '</p>';
+                jobListHTML += '<p>Experience Needed: ' + job.experience_needed + '</p>';
+                jobListHTML += '<p>Salary: ' + job.salary + '</p>';
+                jobListHTML += '<p>Description: ' + job.job_description + '</p>';
+                jobListHTML += '<p>Last Date for Application: ' + job.last_date_for_application + '</p>';
+                jobListHTML += '</li>';
+            });
+            jobListHTML += '</ul>';
+            $('#jobList').html(jobListHTML);
+        }
+    </script>
 </body>
 </html>

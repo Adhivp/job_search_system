@@ -32,4 +32,5 @@ urlpatterns = [
     path('delete_job_opening/<int:job_id>/',delete_job_opening, name='delete_job_opening'),
     path('candidate_login/', candidate_login, name='candidate_login'),
     path('job_listing_page/', job_listing_page, name='job_listing_page'),
+    path('api/job-openings/', JobOpeningList.as_view(), name='job-opening-list')
 ]

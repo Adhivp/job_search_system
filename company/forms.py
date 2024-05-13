@@ -1,4 +1,5 @@
 from django import forms
+from django.utils import timezone
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
@@ -35,3 +36,8 @@ class JobOpeningForm(forms.ModelForm):
         widgets = {
             'last_date_for_application': forms.DateInput(attrs={'type': 'date'})
         }
+    def clean_last_date_for_application(self):
+        last_date = self.cleaned_data.get('last_date_for_application')
+        if last_date <= timezone.now().date():
+            raise forms.ValidationError("Last date must be after today.")
+        return last_date

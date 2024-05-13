@@ -1,6 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login
-from django.views.decorators.csrf import csrf_exempt
 from .forms import CompanyLoginForm,CompanyRegistrationForm,JobOpeningForm
 from .models import CompanyAuth
 from .models import JobOpening
