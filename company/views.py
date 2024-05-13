@@ -15,7 +15,7 @@ def register_company(request):
                 bio=form.cleaned_data['bio']
             )
 
-            return redirect('login') 
+            return redirect('company_login') 
     else:
         form = CompanyRegistrationForm()
     return render(request, 'register_company.html', {'form': form})
