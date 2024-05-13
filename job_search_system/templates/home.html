@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page</title>
+</head>
+<body>
+    <h1>Welcome to Our Job Portal</h1>
+    <h2>Are you a Company or a Candidate?</h2>
+    <div>
+        <h3>Company</h3>
+        <p>
+            <a href="{% url 'company_login' %}">Login</a> or 
+            <a href="{% url 'register_company' %}">Register</a>
+        </p>
+    </div>
+    <div>
+        <h3>Candidate</h3>
+        <p>
+            <a href="{% url 'candidate_login' %}">Login</a> or 
+            <a href="{% url 'register_candidate' %}">Register</a>
+        </p>
+    </div>
+</body>
+</html>

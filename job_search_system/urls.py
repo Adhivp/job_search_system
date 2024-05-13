@@ -18,10 +18,11 @@ from django.contrib import admin
 from django.urls import path
 from company.views import register_company,company_login,company_dashboard,create_job_opening,delete_job_opening
 from candidate.views import register_candidate,candidate_login,job_listing_page
-
+from .views import home
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', home, name='home'),
     path('register_company/', register_company, name='register_company'),
     path('company_login/', company_login, name='company_login'),
     path('company_login/', company_login, name='company_login'),
