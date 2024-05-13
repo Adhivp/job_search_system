@@ -56,6 +56,9 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+CSRF_TRUSTED_ORIGINS = [
+    'https://job-search-system-y10u.onrender.com',
+]
 ROOT_URLCONF = 'job_search_system.urls'
 
 TEMPLATES = [
