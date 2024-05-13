@@ -3,9 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Job Openings</title>
-    <!-- Bootstrap CSS -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 </head>
 <body>
@@ -16,44 +14,102 @@
         </div>
         <button id="searchBtn" class="btn btn-primary mb-3">Search</button>
         <div id="jobList"></div>
+
+        <h2>Applied Jobs</h2>
+        <div id="appliedJobs"></div>
     </div>
 
     <script>
         $(document).ready(function() {
-            $('#searchBtn').click(function() {
-                var searchTerm = $('#searchInput').val();
-                // AJAX request to fetch job openings
-                $.ajax({
-                    url: '/api/job-openings/',
-                    type: 'GET',
-                    data: { search: searchTerm },
-                    success: function(data) {
-                        console.log('Received response:', data);
-                        displayJobOpenings(data);
-                    },
-                    error: function(xhr, status, error) {
-                        console.error('Error occurred:', xhr.responseText);
-                        $('#jobList').html('<p>Error occurred while fetching data.</p>');
-                    }
-                });
-            });
+    $('#searchBtn').click(function() {
+        var searchTerm = $('#searchInput').val();
+        $.ajax({
+            url: '/api/job-openings/',
+            type: 'GET',
+            data: { search: searchTerm },
+            success: function(data) {
+                console.log('Received response:', data);
+                displayJobOpenings(data);
+            },
+            error: function(xhr, status, error) {
+                console.error('Error occurred:', xhr.responseText);
+                $('#jobList').html('<p>Error occurred while fetching data.</p>');
+            }
         });
-    
-        function displayJobOpenings(data) {
-            var jobListHTML = '<ul class="list-group">';
-            $.each(data, function(index, job) {
-                jobListHTML += '<li class="list-group-item">';
-                jobListHTML += '<h5>' + job.job_title + '</h5>';
-                jobListHTML += '<p>Company: ' + job.company_name + '</p>';
-                jobListHTML += '<p>Experience Needed: ' + job.experience_needed + '</p>';
-                jobListHTML += '<p>Salary: ' + job.salary + '</p>';
-                jobListHTML += '<p>Description: ' + job.job_description + '</p>';
-                jobListHTML += '<p>Last Date for Application: ' + job.last_date_for_application + '</p>';
-                jobListHTML += '</li>';
-            });
-            jobListHTML += '</ul>';
-            $('#jobList').html(jobListHTML);
+    });
+});
+
+function displayJobOpenings(data) {
+    var jobListHTML = '<ul class="list-group">';
+    $.each(data, function(index, job) {
+        jobListHTML += '<li class="list-group-item">';
+        jobListHTML += '<h5>' + job.job_title + '</h5>';
+        jobListHTML += '<p>Company: ' + job.company_name + '</p>';
+        jobListHTML += '<p>Experience Needed: ' + job.experience_needed + '</p>';
+        jobListHTML += '<p>Salary: ' + job.salary + '</p>';
+        jobListHTML += '<p>Description: ' + job.job_description + '</p>';
+        jobListHTML += '<p>Last Date for Application: ' + job.last_date_for_application + '</p>';
+        jobListHTML += '<button class="btn btn-success applyBtn" data-jobid="' + job.jobid + '">Apply</button>';
+        jobListHTML += '</li>';
+    });
+    jobListHTML += '</ul>';
+    $('#jobList').html(jobListHTML);
+}
+
+$(document).on('click', '.applyBtn', function() {
+    var jobId = $(this).data('jobid');
+    $.ajax({
+        url: '/api/apply-job/',
+        type: 'POST',
+        data: { job_id: jobId },
+        headers: { 'X-CSRFToken': getCookie('csrftoken') },  // Include CSRF token in headers
+        success: function(response) {
+            alert('Successfully applied for job.');
+            fetchAppliedJobs();
+        },
+        error: function(xhr, status, error) {
+            console.error('Error occurred while applying for job:', xhr.responseText);
+            alert('Error occurred while applying for job. Please try again.');
         }
+    });
+});
+
+function fetchAppliedJobs() {
+    $.ajax({
+        url: '/api/applied-jobs/',
+        type: 'GET',
+        success: function(data) {
+            var appliedJobsHTML = '<ul class="list-group">';
+            $.each(data, function(index, job) {
+                appliedJobsHTML += '<li class="list-group-item">' + job.job_title + ' - ' + job.company_name + '</li>';
+            });
+            appliedJobsHTML += '</ul>';
+            $('#appliedJobs').html(appliedJobsHTML);
+        },
+        error: function(xhr, status, error) {
+            console.error('Error occurred while fetching applied jobs:', xhr.responseText);
+            $('#appliedJobs').html('<p>Error occurred while fetching applied jobs.</p>');
+        }
+    });
+}
+
+fetchAppliedJobs();
+
+// Function to get CSRF token from cookie
+function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
     </script>
 </body>
 </html>

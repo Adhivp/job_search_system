@@ -4,8 +4,13 @@ from .forms import CandidateRegistrationForm,CandidateLoginForm
 from .models import CandidateAuth
 from company.models import JobOpening
 from .serializers import JobOpeningSerializer
-from rest_framework import generics, filters
+from rest_framework import generics, filters,status
 from .serializers import JobOpeningSerializer
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from .models import CandidateAuth
+
+
 
 def register_candidate(request):
     if request.method == 'POST':
@@ -43,6 +48,31 @@ class JobOpeningList(generics.ListAPIView):
     serializer_class = JobOpeningSerializer
     filter_backends = [filters.SearchFilter]
     search_fields = ['job_title', 'company__company_name']
+
+@api_view(['POST'])
+def apply_job(request):
+    candidate_id = request.user.id
+    job_id = request.data.get('job_id')
+    try:
+        candidate = CandidateAuth.objects.get(user_id=candidate_id)
+        job = JobOpening.objects.get(jobid=job_id)
+        candidate.applied_jobs.add(job)
+        return Response(status=status.HTTP_200_OK)
+    except CandidateAuth.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+    except JobOpening.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+@api_view(['GET'])
+def applied_jobs(request):
+    candidate_id = request.user.id
+    try:
+        candidate = CandidateAuth.objects.get(user_id=candidate_id)
+        applied_jobs = candidate.applied_jobs.all()
+        serializer = JobOpeningSerializer(applied_jobs, many=True)
+        return Response(serializer.data)
+    except CandidateAuth.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
 
 def job_listing_page(request):
     return render(request,'job_listing_page.html')
