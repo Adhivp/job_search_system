@@ -57,7 +57,8 @@ ROOT_URLCONF = 'job_search_system.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'company/templates'),
+                 os.path.join(BASE_DIR, 'candidate/templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
