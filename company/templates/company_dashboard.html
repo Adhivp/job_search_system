@@ -2,19 +2,75 @@
 <html>
 <head>
     <title>Company Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
+        }
+        h1, h2 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+        form {
+            margin-bottom: 20px;
+        }
+        button[type="submit"] {
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        button[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+        hr {
+            border: 0;
+            border-top: 1px solid #ccc;
+            margin: 20px 0;
+        }
+        p {
+            margin-bottom: 10px;
+        }
+        a {
+            color: #007bff;
+            text-decoration: none;
+            margin-right: 10px;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
 </head>
 <body>
-    <h1>Company Dashboard</h1>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Add Job Opening</button>
-    </form>
-    <hr>
-    <h2>Job Openings</h2>
-    {% for job_opening in job_openings %}
-        <p>{{ job_opening.job_title }} - <a href="{% url 'edit_job_opening' job_opening.pk %}">Edit</a>|<a href="{% url 'delete_job_opening' job_opening.pk %}">Delete</a>|
-            <a href="{% url 'job_applicants_list' job_opening.pk %}">View Applicants</a></p>
-    {% endfor %}
+    <div class="container">
+        <h1>Company Dashboard</h1>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Add Job Opening</button>
+        </form>
+        <hr>
+        <h2>Job Openings</h2>
+        {% for job_opening in job_openings %}
+            <p>{{ job_opening.job_title }} - 
+                <a href="{% url 'edit_job_opening' job_opening.pk %}">Edit</a> |
+                <a href="{% url 'delete_job_opening' job_opening.pk %}">Delete</a> |
+                <a href="{% url 'job_applicants_list' job_opening.pk %}">View Applicants</a>
+            </p>
+        {% endfor %}
+    </div>
 </body>
 </html>

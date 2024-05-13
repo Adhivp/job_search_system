@@ -4,23 +4,82 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            text-align: center;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+        }
+        h1 {
+            color: #333;
+            font-size: 36px;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            color: #666;
+            font-size: 24px;
+            margin-bottom: 30px;
+        }
+        .options {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+        .options > div {
+            flex: 0 0 calc(50% - 10px);
+        }
+        .options a {
+            display: block;
+            text-decoration: none;
+            color: #fff;
+            background-color: #007bff;
+            padding: 10px 20px;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+        .options a:hover {
+            background-color: #0056b3;
+        }
+    </style>
 </head>
 <body>
-    <h1>Welcome to Our Job Portal</h1>
-    <h2>Are you a Company or a Candidate?</h2>
-    <div>
-        <h3>Company</h3>
-        <p>
-            <a href="{% url 'company_login' %}">Login</a> or 
-            <a href="{% url 'register_company' %}">Register</a>
-        </p>
-    </div>
-    <div>
-        <h3>Candidate</h3>
-        <p>
-            <a href="{% url 'candidate_login' %}">Login</a> or 
-            <a href="{% url 'register_candidate' %}">Register</a>
-        </p>
+    <div class="container">
+        <h1>Welcome to Our Job Portal</h1>
+        <h2>Are you a Company or a Candidate?</h2>
+        <div class="options">
+            <div>
+                <h3>Company</h3>
+                <p>
+                    <a href="{% url 'company_login' %}">Login</a>
+                </p>
+                <p>
+                    <a href="{% url 'register_company' %}">Register</a>
+                </p>
+            </div>
+            <div>
+                <h3>Candidate</h3>
+                <p>
+                    <a href="{% url 'candidate_login' %}">Login</a>
+                </p>
+                <p>
+                    <a href="{% url 'register_candidate' %}">Register</a>
+                </p>
+            </div>
+        </div>
     </div>
 </body>
 </html>
