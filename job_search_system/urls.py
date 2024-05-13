@@ -16,8 +16,8 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from company.views import register_company,company_login,company_dashboard,create_job_opening,delete_job_opening
-from candidate.views import register_candidate,candidate_login,job_listing_page
+from company.views import *
+from candidate.views import *
 from .views import home
 
 urlpatterns = [
@@ -28,9 +28,8 @@ urlpatterns = [
     path('company_login/', company_login, name='company_login'),
     path('company_dashboard',company_dashboard,name = 'company_dashboard'),
     path('register_candidate/', register_candidate, name='register_candidate'),
+    path('edit_job_opening/<int:job_id>/',edit_job_opening, name='edit_job_opening'),
+    path('delete_job_opening/<int:job_id>/',delete_job_opening, name='delete_job_opening'),
     path('candidate_login/', candidate_login, name='candidate_login'),
     path('job_listing_page/', job_listing_page, name='job_listing_page'),
-    path('api/create_job_opening/', create_job_opening, name='create_job_opening'),
-    path('api/delete_job_opening/<int:pk>/', delete_job_opening, name='delete_job_opening')
-   
 ]

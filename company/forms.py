@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
-
+from .models import JobOpening
 
 class CompanyRegistrationForm(UserCreationForm):
     company_name = forms.CharField(max_length=100)
@@ -27,3 +27,11 @@ class CompanyLoginForm(forms.Form):
             else:
                 raise forms.ValidationError("Invalid username or password.")
         raise forms.ValidationError("Both fields are required.")
+
+class JobOpeningForm(forms.ModelForm):
+    class Meta:
+        model = JobOpening
+        fields = ['job_title', 'experience_needed', 'salary', 'job_description', 'last_date_for_application']
+        widgets = {
+            'last_date_for_application': forms.DateInput(attrs={'type': 'date'})
+        }
