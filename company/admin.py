@@ -1,3 +1,5 @@
 from django.contrib import admin
+from .models import CompanyAuth,JobOpening
 
-# Register your models here.
+admin.site.register(CompanyAuth)
+admin.site.register(JobOpening)
