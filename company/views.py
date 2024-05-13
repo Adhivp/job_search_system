@@ -66,3 +66,8 @@ def delete_job_opening(request, job_id):
         job_opening.delete()
         return redirect('company_dashboard')
     return render(request, 'delete_job_opening.html', {'job_opening': job_opening})
+
+def job_applicants_list(request, job_id):
+    job_opening = get_object_or_404(JobOpening, pk=job_id)
+    applicants = job_opening.applicants.all()
+    return render(request, 'job_applicants_list.html', {'job_opening': job_opening, 'applicants': applicants})

@@ -13,7 +13,8 @@
     <hr>
     <h2>Job Openings</h2>
     {% for job_opening in job_openings %}
-        <p>{{ job_opening.job_title }} - <a href="{% url 'edit_job_opening' job_opening.pk %}">Edit</a> | <a href="{% url 'delete_job_opening' job_opening.pk %}">Delete</a></p>
+        <p>{{ job_opening.job_title }} - <a href="{% url 'edit_job_opening' job_opening.pk %}">Edit</a>|<a href="{% url 'delete_job_opening' job_opening.pk %}">Delete</a>|
+            <a href="{% url 'job_applicants_list' job_opening.pk %}">View Applicants</a></p>
     {% endfor %}
 </body>
 </html>

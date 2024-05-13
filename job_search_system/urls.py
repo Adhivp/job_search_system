@@ -28,6 +28,7 @@ urlpatterns = [
     path('company_login/', company_login, name='company_login'),
     path('company_dashboard',company_dashboard,name = 'company_dashboard'),
     path('register_candidate/', register_candidate, name='register_candidate'),
+    path('job_applicants_list/<int:job_id>', job_applicants_list, name='job_applicants_list'),
     path('edit_job_opening/<int:job_id>/',edit_job_opening, name='edit_job_opening'),
     path('delete_job_opening/<int:job_id>/',delete_job_opening, name='delete_job_opening'),
     path('candidate_login/', candidate_login, name='candidate_login'),

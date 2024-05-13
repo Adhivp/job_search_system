@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Applicants for {{ job_opening.job_title }}</title>
+</head>
+<body>
+    <h1>Applicants for {{ job_opening.job_title }}</h1>
+    <ul>
+    {% for applicant in applicants %}
+        <li>{{ applicant.name }} - {{ applicant.profession_name }}</li>
+    {% empty %}
+        <li>No applicants yet.</li>
+    {% endfor %}
+    </ul>
+    <a href="{% url 'company_dashboard' %}">Back to Dashboard</a>
+</body>
+</html>
