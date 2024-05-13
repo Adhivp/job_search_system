@@ -3,9 +3,65 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Job Openings</title>
 </head>
 <body>
-    <h1>Login Succesful</h1>
+    <h1>Create Job Opening</h1>
+    <form id="create-job-form">
+        {% csrf_token %}
+        <label for="job_title">Job Title:</label><br>
+        <input type="text" id="job_title" name="job_title" placeholder="Enter job title" required><br>
+        <label for="experience_needed">Experience Needed:</label><br>
+        <input type="text" id="experience_needed" name="experience_needed" placeholder="Enter experience needed" required><br>
+        <label for="salary">Salary:</label><br>
+        <input type="number" id="salary" name="salary" placeholder="Enter salary" required><br>
+        <label for="job_description">Job Description:</label><br>
+        <textarea id="job_description" name="job_description" placeholder="Enter job description" required></textarea><br>
+        <label for="last_date_for_application">Last Date for Application:</label><br>
+        <input type="date" id="last_date_for_application" name="last_date_for_application" required><br>
+        <button type="submit">Create Job Opening</button>
+    </form>
+
+    <h1>Delete Job Opening</h1>
+    <form id="delete-job-form">
+        {% csrf_token %}
+        <label for="job_id">Job ID to delete:</label><br>
+        <input type="number" id="job_id" name="job_id" placeholder="Enter job ID" required><br>
+        <button type="submit">Delete Job Opening</button>
+    </form>
+
+    <script>
+        document.getElementById('create-job-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            let formData = new FormData(this);
+            fetch('/api/create_job_opening/', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Job opening created successfully:', data);
+                // Reset the form after successful submission
+                this.reset();
+            })
+            .catch(error => console.error('Error:', error));
+        });
+
+        document.getElementById('delete-job-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            let jobId = this.job_id.value;
+            fetch(`/api/delete_job_opening/${jobId}/`, {
+                method: 'DELETE'
+            })
+            .then(response => {
+                if (response.ok) {
+                    console.log('Job opening deleted successfully');
+                } else {
+                    console.error('Error deleting job opening');
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        });
+    </script>
 </body>
 </html>
